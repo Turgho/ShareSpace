@@ -1,0 +1,188 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Table
+
+model User {
+  id              String   @id @default(uuid()) @db.Uuid
+  name            String   @db.VarChar(100)
+  username        String   @unique @db.VarChar(50)
+  email           String   @unique @db.VarChar(255)
+  phoneNumber     String?  @unique @db.VarChar(16)
+  passwordHash    String   @db.Text
+  bio             String?  @db.Text
+  profilePicture  String?  @db.Text
+  coverPicture    String?  @db.Text
+  isVerified      Boolean  @default(false)
+  status          String   @default("active") @db.VarChar(10)
+  lastLogin       DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relacionamento com Posts
+  posts           Post[]   @relation("UserPosts")
+
+  // Relacionamento com Likes
+  likes           Like[]   @relation("UserLikes")
+
+  // Relacionamento com Follows
+  followers       Follow[] @relation("Follower")
+  following       Follow[] @relation("Following")
+
+  // Relacionamento com Messages
+  sentMessages    Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+
+  // Relacionamento com SavedPosts
+  savedPosts      SavedPost[]
+
+  // Relacionamento com Reports
+  reports         Report[]  @relation("Reporter")
+  reportedPosts   Report[]  @relation("ReportedUser")
+
+  // Relacionamento com Notifications
+  notifications   Notification[] @relation("UserNotifications")
+  sentNotifications Notification[] @relation("SenderNotifications")
+}
+
+// Post Table
+
+model Post {
+  id              String   @id @default(uuid()) @db.Uuid
+  userId          String   @db.Uuid
+  content         String   @db.Text
+  mediaUrl        String[] @db.Text
+  linkPreviewUrl  String?  @db.Text
+  visibility      String   @default("public") @db.VarChar(10)
+  createdAt       DateTime @default(now())
+
+  // Relacionamento com User
+  user            User     @relation("UserPosts", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Relacionamento com Likes
+  likes           Like[]
+
+  // Relacionamento com SavedPost
+  savedPosts      SavedPost[]
+
+  // Relacionamento com Reports
+  reports         Report[]
+
+  // Relacionamento com Notifications
+  notifications   Notification[] @relation("PostNotifications")
+}
+
+
+// Like Table
+
+model Like {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  postId    String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  user      User     @relation("UserLikes", fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  // Garantir que o par (userId, postId) seja único
+  @@unique([userId, postId])
+}
+
+// Follow Table
+
+model Follow {
+  id            String   @id @default(uuid()) @db.Uuid
+  followerId    String   @db.Uuid
+  followingId   String   @db.Uuid
+  createdAt     DateTime @default(now())
+
+  // Relacionamentos
+  follower      User     @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following     User     @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  // Garantir que o par (followerId, followingId) seja único
+  @@unique([followerId, followingId])
+}
+
+// Message Table
+
+model Message {
+  id                 String   @id @default(uuid()) @db.Uuid
+  senderId           String   @db.Uuid
+  receiverId         String   @db.Uuid
+  content            String   @db.Text
+  media              String[] @db.Text
+  read               Boolean  @default(false)
+  deletedBySender    Boolean  @default(false)
+  deletedByReceiver  Boolean  @default(false)
+  createdAt          DateTime @default(now())
+
+  // Relacionamentos
+  sender             User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver           User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+}
+
+// SavedPost Table
+
+model SavedPost {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  postId    String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  // Garantir que o par (userId, postId) seja único
+  @@unique([userId, postId])
+}
+
+// Report Table
+
+model Report {
+  id              String   @id @default(uuid()) @db.Uuid
+  reporterId      String   @db.Uuid
+  reportedUserId  String   @db.Uuid
+  reportedPostId  String   @db.Uuid
+  reason          String   @db.Text
+  status          String   @default("pending") @db.VarChar(10)
+  createdAt       DateTime @default(now())
+
+  // Relacionamentos
+  reporter        User     @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedUser    User     @relation("ReportedUser", fields: [reportedUserId], references: [id], onDelete: Cascade)
+  reportedPost    Post     @relation(fields: [reportedPostId], references: [id], onDelete: Cascade)
+}
+
+// Notification Table
+
+model Notification {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @db.Uuid
+  senderId    String   @db.Uuid
+  type        String   @db.VarChar(50)
+  referenceId String?  @db.Uuid
+  seen        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  // Relacionamentos
+  user        User     @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  sender      User     @relation("SenderNotifications", fields: [senderId], references: [id], onDelete: Cascade)
+
+  // Relacionamento reverso com Post
+  post        Post?    @relation("PostNotifications", fields: [referenceId], references: [id], onDelete: Cascade)
+}
