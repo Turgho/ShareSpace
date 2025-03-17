@@ -1,22 +1,52 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  try {
+    // Criação da aplicação Nest com Fastify
+    const app = await NestFactory.create<NestFastifyApplication>(
+      AppModule,
+      new FastifyAdapter(),
+    );
+  
+    // Habilita o CORS
+    app.enableCors();
+  
+    // Configuração do Swagger
+    const swaggerConfig = new DocumentBuilder()
+      .setTitle('API ShareSpace')
+      .setDescription('API documentation for ShareSpace')
+      .setVersion('1.0')
+      .addBearerAuth()
+      .build();
+  
+    // Criar e configurar Swagger
+    const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup('/api', app, swaggerDocument);
+  
+    // Verificar e definir a porta do servidor
+    const port = process.env.PORT ?? 3000;
+  
+    if (!port) {
+      throw new Error('Port not defined');
+    }
+  
+    // Iniciar o servidor Fastify
+    await app.listen(port, '0.0.0.0');
+  
+    console.log(`🚀 Server running on http://localhost:${port}`);
+    console.log(`📖 Swagger docs available at http://localhost:${port}/api`);
 
-  // Swagger config documentation
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('API ShareSpace')
-    .setDescription('Documentation of API ShareSpace')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
-  // Create Swagger document
-  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('API', app, swaggerDocument);
-
-  // Server Listen Port
-  await app.listen(process.env.PORT ?? 3000);
+  } catch (error: unknown) {
+    // Tratamento do erro
+    if (error instanceof Error) {
+      console.error('Error during application startup:', error.message);
+    } else {
+      console.error('Unknown error during application startup', error);
+    }
+  }
 }
+
 bootstrap();
