@@ -28,7 +28,7 @@ async function bootstrap() {
   
     // Criar e configurar Swagger
     const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-    SwaggerModule.setup('/docs', app, swaggerDocument);
+    SwaggerModule.setup('/api/docs', app, swaggerDocument);
   
     // Verificar e definir a porta do servidor
     const port = process.env.PORT ?? 3000;

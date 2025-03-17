@@ -11,7 +11,7 @@ export class UsersController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new user.' })
-  @ApiResponse({ status: 201, description: 'New user created.', type: CreateUserDto })
+  @ApiResponse({ status: 201, description: 'New user created.' })
   @ApiResponse({ status: 400, description: 'Error creating a new user.' })
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.createUser(createUserDto);
