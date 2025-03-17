@@ -51,13 +51,13 @@ import {
       description: 'The phone number of the user',
       example: '+5511987654321',
     })
-    @IsPhoneNumber('BR')
+    @IsPhoneNumber()
     phoneNumber: string;
   
-    // PASSWORD HASH
+    // PASSWORD
     @ApiProperty({
       description: 'The hashed password of the user',
-      example: 'SecurePassword123!',
+      example: 'PlainPassword123!',
     })
     @IsNotEmpty()
     @Matches(/^[a-f0-9]{64}$/, { message: 'Password hash must be a valid SHA-256 hash' })
@@ -70,7 +70,7 @@ import {
     })
     @IsOptional()
     @IsString()
-    bio: string;
+    bio?: string | null;
   
     // PROFILE PICTURE
     @ApiProperty({
@@ -79,7 +79,7 @@ import {
     })
     @IsOptional()
     @IsString()
-    profilePicture: string;
+    profilePicture?: string | null;
   
     // COVER PICTURE
     @ApiProperty({
@@ -88,7 +88,7 @@ import {
     })
     @IsOptional()
     @IsString()
-    coverPicture: string;
+    coverPicture?: string | null;
   
     // IS VERIFIED
     @ApiProperty({
