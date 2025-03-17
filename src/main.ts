@@ -13,18 +13,22 @@ async function bootstrap() {
   
     // Habilita o CORS
     app.enableCors();
+
+    // Prefixo global para todas as rotas
+    app.setGlobalPrefix('api');
   
     // Configuração do Swagger
     const swaggerConfig = new DocumentBuilder()
       .setTitle('API ShareSpace')
       .setDescription('API documentation for ShareSpace')
       .setVersion('1.0')
+      .addTag('Users')
       .addBearerAuth()
       .build();
   
     // Criar e configurar Swagger
     const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-    SwaggerModule.setup('/api', app, swaggerDocument);
+    SwaggerModule.setup('/docs', app, swaggerDocument);
   
     // Verificar e definir a porta do servidor
     const port = process.env.PORT ?? 3000;
@@ -35,9 +39,6 @@ async function bootstrap() {
   
     // Iniciar o servidor Fastify
     await app.listen(port, '0.0.0.0');
-  
-    console.log(`🚀 Server running on http://localhost:${port}`);
-    console.log(`📖 Swagger docs available at http://localhost:${port}/api`);
 
   } catch (error: unknown) {
     // Tratamento do erro
