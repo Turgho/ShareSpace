@@ -56,6 +56,10 @@ model User {
   // Relacionamento com Notifications
   notifications   Notification[] @relation("UserNotifications")
   sentNotifications Notification[] @relation("SenderNotifications")
+
+  Comment Comment[]
+
+  CommentLike CommentLike[]
 }
 
 // Post Table
@@ -83,6 +87,9 @@ model Post {
 
   // Relacionamento com Notifications
   notifications   Notification[] @relation("PostNotifications")
+
+  // Relacionamento com Comentários
+  comments        Comment[]
 }
 
 
@@ -101,6 +108,40 @@ model Like {
   // Garantir que o par (userId, postId) seja único
   @@unique([userId, postId])
 }
+
+// Comment Table
+
+model Comment {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @db.Uuid
+  postId      String   @db.Uuid
+  content     String   @db.Text
+  createdAt   DateTime @default(now())
+
+  // Relacionamentos
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  // Relacionamento com Likes nos comentários
+  likes       CommentLike[]
+}
+
+// CommentLike Table (Curtir Comentários)
+
+model CommentLike {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  commentId String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  // Garantir que o par (userId, commentId) seja único
+  @@unique([userId, commentId])
+}
+
 
 // Follow Table
 
