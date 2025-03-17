@@ -21,6 +21,7 @@ model User {
   name            String   @db.VarChar(100)
   username        String   @unique @db.VarChar(50)
   email           String   @unique @db.VarChar(255)
+  dateOfBirth     DateTime
   phoneNumber     String?  @unique @db.VarChar(16)
   passwordHash    String   @db.Text
   bio             String?  @db.Text
