@@ -22,14 +22,14 @@ model User {
   username        String   @unique @db.VarChar(50)
   email           String   @unique @db.VarChar(255)
   dateOfBirth     DateTime
-  phoneNumber     String?  @unique @db.VarChar(16)
+  phoneNumber     String  @unique @db.VarChar(16)
   passwordHash    String   @db.Text
   bio             String?  @db.Text
   profilePicture  String?  @db.Text
   coverPicture    String?  @db.Text
   isVerified      Boolean  @default(false)
   status          String   @default("active") @db.VarChar(10)
-  lastLogin       DateTime?
+  lastLogin       DateTime
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
