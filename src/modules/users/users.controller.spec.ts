@@ -16,7 +16,7 @@ describe('UsersController', () => {
       controllers: [UsersController],
       providers: [
         UsersService,
-        PrismaService,  // Mocking Prisma Service or you can use a mock for database interaction
+        PrismaService, // Mocking Prisma Service or you can use a mock for database interaction
       ],
     }).compile();
 
@@ -34,7 +34,7 @@ describe('UsersController', () => {
         passwordHash: 'hashedpassword',
         username: 'johndoe',
         dateOfBirth: new Date('1990-01-01T00:00:00Z'),
-        phoneNumber: '1234567890',
+        phoneNumber: '+5511987654321',
         bio: 'Developer',
         profilePicture: 'http://example.com/johndoe.jpg',
         coverPicture: 'http://example.com/johndoe_cover.jpg',
@@ -58,6 +58,7 @@ describe('UsersController', () => {
 
       // Resultado esperado
       expect(result).toEqual(userResult);
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(usersService.createUser).toHaveBeenCalledWith(createUserDto);
     });
   });
