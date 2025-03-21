@@ -1,17 +1,17 @@
-# ShareSpace
+# ShareSpace 🌐
 
-ShareSpace é uma plataforma de rede social inspirada no X (antigo Twitter). Os usuários podem interagir, postar conteúdos, curtir e comentar postagens, seguir outros usuários e enviar mensagens diretas. A plataforma foi desenvolvida com tecnologias modernas para oferecer uma experiência interativa e intuitiva.
+ShareSpace é uma plataforma de rede social inspirada no X (antigo Twitter), onde os usuários podem interagir, postar conteúdos, curtir e comentar postagens, seguir outros usuários e enviar mensagens diretas. Desenvolvida com tecnologias modernas, a ShareSpace oferece uma experiência interativa e intuitiva para seus usuários.
 
-## Funcionalidades
+## 🚀 Funcionalidades
 
-- **Postagens**: Os usuários podem postar textos, links, fotos e vídeos.
-- **Curtidas e Comentários**: É possível curtir e comentar nas postagens.
-- **Favoritos**: Os usuários podem salvar suas postagens favoritas.
-- **Seguir Usuários**: Permite que os usuários sigam uns aos outros para acompanhar as atualizações.
-- **Mensagens Diretas**: Enviar mensagens privadas para outros usuários.
-- **Perfil de Usuário**: Cada usuário possui um perfil onde podem armazenar informações como nome, e-mail, telefone, status e outros detalhes.
+- **📝 Postagens**: Os usuários podem postar textos, links, fotos e vídeos.
+- **👍 Curtidas e Comentários**: É possível curtir e comentar nas postagens.
+- **⭐ Favoritos**: Os usuários podem salvar suas postagens favoritas.
+- **👥 Seguir Usuários**: Permite que os usuários sigam uns aos outros para acompanhar as atualizações.
+- **📩 Mensagens Diretas**: Enviar mensagens privadas para outros usuários.
+- **👤 Perfil de Usuário**: Cada usuário possui um perfil onde podem armazenar informações como nome, e-mail, telefone, status e outros detalhes.
 
-## Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
 - **Backend**: NestJS (TypeScript)
 - **Frontend**: Angular, Tailwind CSS
@@ -19,7 +19,7 @@ ShareSpace é uma plataforma de rede social inspirada no X (antigo Twitter). Os 
 - **Autenticação**: JWT (JSON Web Token)
 - **Gerenciamento de Containers**: Docker
 
-## Pré-requisitos
+## 📋 Pré-requisitos
 
 Antes de começar, verifique se você tem as seguintes ferramentas instaladas:
 
@@ -28,7 +28,7 @@ Antes de começar, verifique se você tem as seguintes ferramentas instaladas:
 - **PostgreSQL** (ou qualquer outro banco de dados compatível com Prisma)
 - **NestJS CLI** (opcional, mas recomendado)
 
-## Instalação
+## 🛠️ Instalação
 
 ### 1. Clone o Repositório
 
@@ -76,10 +76,14 @@ npm run start:dev
 - O backend pode ser acessado através de `http://localhost:3000`.
 - O frontend pode ser configurado com Angular e Tailwind CSS para o design responsivo.
 
-## Contribuindo
+## 🤝 Contribuindo
 
 - Faça o fork do repositório.
 - Crie uma nova branch (git checkout -b feature/novidade).
 - Faça as alterações e commit.
 - Envie para o seu fork (git push origin feature/novidade).
 - Crie um pull request.
+
+## 📄 Licença
+
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
