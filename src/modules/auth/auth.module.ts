@@ -1,29 +1,20 @@
-// src/modules/auth/auth.module.ts
 import { Module } from '@nestjs/common';
-import { AuthService } from './services/auth.service';
-import { AuthController } from './controllers/auth.controller';
-import { UsersModule } from '../users/users.module';
-import { PasswordHasherService } from './services/password-hasher.service'; // Serviço de hash de senha
-import { PasswordComparerService } from './services/password-comparer.service'; // Serviço de comparação de senha
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from '../../middleware/jwt/jwt.strategy';
+import { AuthService } from './services/auth.service';
+import { UsersModule } from '../users/users.module'; // Importe o módulo de usuários se necessário
+import { AuthController } from './controllers/auth.controller';
 
 @Module({
   imports: [
-    UsersModule,
-    JwtModule.register({ secret: 'secretKey', signOptions: { expiresIn: '1h' } }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET_KEY, // Defina a chave secreta de forma segura
+      signOptions: { expiresIn: '1h' }, // Expiração do token
+    }),
+    UsersModule, // Para acessar o serviço de usuários, se necessário
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    {
-      provide: 'PASSWORD_HASHER',
-      useClass: PasswordHasherService,
-    },
-    {
-      provide: 'PASSWORD_COMPARER',
-      useClass: PasswordComparerService,
-    },
-  ],
-  exports: [AuthService],
+  providers: [AuthService, JwtStrategy], // Registra o JwtStrategy
+  exports: [AuthService], // Exporta para ser usado em outros módulos
 })
 export class AuthModule {}
