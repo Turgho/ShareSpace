@@ -11,7 +11,7 @@ import { PrismaUserRepository } from './repositories/user.repository';
 @Module({
   imports: [
     JwtModule.register({
-      secret: process.env.JWT_SECRET_KEY,  // Defina a chave secreta
+      secret: process.env.JWT_SECRET_KEY || 'sua_senha_secreta',  // Defina a chave secreta
       signOptions: { expiresIn: '1h' },  // Defina o tempo de expiração do token
     }),
   ],
