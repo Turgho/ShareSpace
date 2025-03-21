@@ -2,8 +2,11 @@
 /dist
 /node_modules
 /build
+/test/
 
 # Prisma
+migrations/
+database/migrations/
 prisma/migrations/
 
 # Logs
