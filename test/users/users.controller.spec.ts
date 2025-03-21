@@ -3,7 +3,7 @@ import { UsersController } from '../../src/modules/users/controllers/users.contr
 import { UsersService } from '../../src/modules/users/services/users.service';
 import { PrismaService } from '../../src/modules/database/prisma.service';
 import { BadRequestException, ConflictException } from '@nestjs/common';
-import { CreateUserDto } from '../../src/modules/users/dto/create-user.dto';
+import { CreateUserDto } from '../../src/modules/users/interfaces/create-user-dto.interface';
 
 describe('UsersController', () => {
   let controller: UsersController;  // Instância do controller que será testada
