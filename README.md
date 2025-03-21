@@ -79,9 +79,9 @@ npm run start:dev
 ## 🤝 Contribuindo
 
 - Faça o fork do repositório.
-- Crie uma nova branch (git checkout -b feature/novidade).
+- Crie uma nova branch (`git checkout -b feature/novidade`).
 - Faça as alterações e commit.
-- Envie para o seu fork (git push origin feature/novidade).
+- Envie para o seu fork (`git push origin feature/novidade`).
 - Crie um pull request.
 
 ## 📄 Licença
