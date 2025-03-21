@@ -5,9 +5,13 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { configDotenv } from 'dotenv';
 
 async function bootstrap() {
   try {
+    // Carrega as variáveis de ambiente do arquivo .env
+    configDotenv();
+
     // Criação da aplicação Nest com Fastify
     const app = await NestFactory.create<NestFastifyApplication>(
       AppModule,
