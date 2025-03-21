@@ -1,8 +1,8 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginDto } from '../dto/login.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { UnauthorizedException } from '@nestjs/common';
 
 @ApiTags('Users')
 @Controller('auth')
@@ -35,7 +35,8 @@ export class AuthController {
   })
   async login(@Body() loginDto: LoginDto) {
     try {
-      return await this.authService.login(loginDto);
+      // Retorna token do usuário
+      return await this.authService.generateToken(loginDto);
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw new UnauthorizedException('Invalid credentials');
